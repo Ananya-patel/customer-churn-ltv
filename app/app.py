@@ -13,6 +13,8 @@ FEATURES = [
 churn_model = joblib.load("app/churn_model.pkl")
 ltv_model = joblib.load("app/ltv_model.pkl")
 scaler = joblib.load("app/scaler.pkl")
+st.write("Expected features:", scaler.feature_names_in_)
+
 
 st.set_page_config(page_title="Customer Churn & LTV", layout="centered")
 st.title(" Customer Churn & LTV Predictor")
@@ -23,12 +25,17 @@ tenure = st.number_input("Tenure (months)", min_value=0, value=12)
 contract_risk = st.selectbox("Contract Risk", [0, 1, 2])
 avg_monthly_spend = st.number_input("Avg Monthly Spend", min_value=0.0, value=65.0)
 if st.button("Predict"):
+    FEATURES = list(scaler.feature_names_in_)
+
     input_df = pd.DataFrame([{
     "MonthlyCharges": monthly_charges,
     "tenure": tenure,
     "ContractRisk": contract_risk,
     "AvgMonthlySpend": avg_monthly_spend
 }])
+    input_df = input_df.reindex(columns=FEATURES)
+
+    
     
 
     input_scaled = scaler.transform(input_df)
