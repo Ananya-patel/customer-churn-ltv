@@ -1,6 +1,13 @@
 import streamlit as st
 import pandas as pd
 import joblib
+FEATURES = [
+    "MonthlyCharges",
+    "tenure",
+    "ContractRisk",
+    "AvgMonthlySpend"
+]
+
 
 # Load models
 churn_model = joblib.load("app/churn_model.pkl")
@@ -17,11 +24,12 @@ contract_risk = st.selectbox("Contract Risk", [0, 1, 2])
 avg_monthly_spend = st.number_input("Avg Monthly Spend", min_value=0.0, value=65.0)
 if st.button("Predict"):
     input_df = pd.DataFrame([{
-        "MonthlyCharges": monthly_charges,
-        "tenure": tenure,
-        "ContractRisk": contract_risk,
-        "AvgMonthlySpend": avg_monthly_spend
-    }])
+    "MonthlyCharges": monthly_charges,
+    "tenure": tenure,
+    "ContractRisk": contract_risk,
+    "AvgMonthlySpend": avg_monthly_spend
+}])
+    
 
     input_scaled = scaler.transform(input_df)
 
