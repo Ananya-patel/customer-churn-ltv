@@ -46,14 +46,24 @@ if st.button("Predict"):
 
     # ================== CHURN PIPELINE ==================
     churn_features = list(scaler.feature_names_in_)
-    churn_df = pd.DataFrame([raw_input]).reindex(columns=churn_features)
+    churn_df = churn_df = (
+    pd.DataFrame([raw_input])
+    .reindex(columns=churn_features)
+    .fillna(0)
+)
+
 
     churn_scaled = scaler.transform(churn_df)
     churn_prob = churn_model.predict_proba(churn_scaled)[0][1]
 
     # ================== LTV PIPELINE ==================
     ltv_features = list(ltv_model.feature_names_in_)
-    ltv_df = pd.DataFrame([raw_input]).reindex(columns=ltv_features)
+    ltv_df = ltv_df = (
+    pd.DataFrame([raw_input])
+    .reindex(columns=ltv_features)
+    .fillna(0)
+)
+
 
     predicted_ltv = ltv_model.predict(ltv_df)[0]
 
